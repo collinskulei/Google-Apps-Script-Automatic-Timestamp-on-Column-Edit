@@ -1,0 +1,29 @@
+function onEdit(i) {
+  // Check if the event object is defined
+  if (!i || !i.range) return;
+
+  // Get the edited range and its properties
+  var range = i.range;
+  var sheet = range.getSheet();
+  var row = range.getRow();
+  var column = range.getColumn();
+  var value = range.getValue();
+  
+  // Check if the edited column is B (2nd column)
+  if (column == 2) {
+    // Get the current date and time
+    var currentDate = new Date();
+    
+    // Format the date and time to include the day of the week, date, and time in 24-hour format
+    var formattedDate = Utilities.formatDate(currentDate, Session.getScriptTimeZone(), "EEEE, yyyy-MM-dd HH:mm");
+    
+    // Get the cell in column A of the same row
+    var columnAValue = sheet.getRange(row, 1).getValue();
+    
+    // Check if column A is empty
+    if (value && !columnAValue) {
+      // Set the formatted date and time in column A (1st column)
+      sheet.getRange(row, 1).setValue(formattedDate);
+    }
+  }
+}
